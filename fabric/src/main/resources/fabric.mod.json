@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "resource_nodes",
+  "version": "${version}",
+  "name": "Resource Nodes",
+  "description": "Resource Nodes",
+  "authors": [
+    "Ricky12Awesome"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "MIT",
+  "icon": "assets/resource_nodes/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.ricky12awesome.resourcenodes.fabric.ResourceNodesFabric"
+      }
+    ]
+  },
+  "mixins": [],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19.4",
+    "architectury": ">=8.1.79",
+    "fabric-language-kotlin": ">=1.9.3+kotlin.1.8.20"
+  }
+}

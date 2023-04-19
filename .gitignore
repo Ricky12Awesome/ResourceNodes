@@ -1,0 +1,15 @@
+# Having this includes tends to cause problems form my experience
+.idea
+
+# Gradle
+gradle-app.setting
+.gradletasknamecache
+!gradle-wrapper.jar
+**/.gradle
+**/build
+
+# Minecraft
+**/run
+forge/src/generated/
+
+
