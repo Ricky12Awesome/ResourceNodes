@@ -33,7 +33,7 @@ sourceSets {
  * */
 val common: Configuration by configurations.creating
 val shadowCommon: Configuration by configurations.creating // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-val developmentForge: Configuration = configurations.getByName("developmentForge")
+val developmentForge: Configuration by configurations.getting
 
 configurations {
   compileClasspath.get().extendsFrom(common)
@@ -45,8 +45,15 @@ dependencies {
   forge("net.minecraftforge:forge:$forge_version")
   // Remove the next line if you don't want to depend on the API
   modApi("dev.architectury:architectury-forge:$architectury_version")
-  common(project(":common", configuration = "namedElements")) { isTransitive = false }
-  shadowCommon(project(":common", configuration = "transformProductionForge")) { isTransitive = false }
+
+  common(project(":common", configuration = "namedElements")) {
+    isTransitive = false
+  }
+
+  shadowCommon(project(":common", configuration = "transformProductionForge")) {
+    isTransitive = false
+  }
+
   common(kotlin("stdlib-jdk8"))
 }
 
@@ -57,7 +64,7 @@ repositories {
   }
 }
 
-val javaComponent = components["java"] as AdhocComponentWithVariants
+val javaComponent = components.getByName<AdhocComponentWithVariants>("java")
 
 javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
   skip()
@@ -66,8 +73,8 @@ javaComponent.withVariantsFromConfiguration(configurations["sourcesElements"]) {
 tasks {
   processResources {
     inputs.property("version", project.version)
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
     filesMatching("META-INF/mods.toml") {
       expand("version" to project.version)
@@ -77,13 +84,17 @@ tasks {
   shadowJar {
     exclude("fabric.mod.json")
     exclude("architectury.common.json")
-    configurations = listOf(project.configurations["shadowCommon"])
+
+    configurations = listOf(shadowCommon)
+
     archiveClassifier.set("dev-shadow")
   }
 
   remapJar {
     inputFile.set(shadowJar.flatMap { it.archiveFile })
+
     dependsOn(shadowJar)
+
     archiveClassifier.set("forge")
   }
 
@@ -93,8 +104,10 @@ tasks {
 
   sourcesJar {
     val commonSources = project(":common").tasks.getByName<Jar>("sourcesJar")
+
     dependsOn(commonSources)
     from(commonSources.archiveFile.map { zipTree(it) })
+
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
   }
 
@@ -102,6 +115,7 @@ tasks {
     publications {
       create<MavenPublication>("mavenForge") {
         artifactId = "$archives_base_name-${project.name}"
+
         from(javaComponent)
       }
     }

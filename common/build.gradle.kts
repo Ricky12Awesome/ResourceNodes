@@ -22,6 +22,7 @@ dependencies {
   modImplementation("net.fabricmc:fabric-loader:$fabric_loader_version")
   // Remove the next line if you don't want to depend on the API
   modApi("dev.architectury:architectury:$architectury_version")
+
   implementation(kotlin("stdlib-jdk8"))
 }
 
@@ -29,6 +30,7 @@ publishing {
   publications {
     create<MavenPublication>("maven") {
       artifactId = archives_base_name
+
       from(components.getByName("java"))
     }
   }

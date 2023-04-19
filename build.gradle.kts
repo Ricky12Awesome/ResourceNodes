@@ -13,14 +13,13 @@ plugins {
 group = "ricky12awesome"
 version = "1.0-SNAPSHOT"
 
-val kotlin_version: String by rootProject
-
-val minecraft_version: String by rootProject
-val enabled_platforms: String by rootProject
-val architectury_version: String by rootProject
 val archives_base_name: String by rootProject
-val mod_version: String by rootProject
+val architectury_version: String by rootProject
+val enabled_platforms: String by rootProject
+val kotlin_version: String by rootProject
 val maven_group: String by rootProject
+val minecraft_version: String by rootProject
+val mod_version: String by rootProject
 
 architectury {
   minecraft = minecraft_version
