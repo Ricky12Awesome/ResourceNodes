@@ -2,6 +2,9 @@ package dev.ricky12awesome.resourcenodes.block.entity
 
 import dev.ricky12awesome.resourcenodes.container.ExtractorContainer
 import dev.ricky12awesome.resourcenodes.container.SingleSlotItemList
+import earth.terrarium.botarium.common.energy.base.EnergyAttachment
+import earth.terrarium.botarium.common.energy.impl.SimpleEnergyContainer
+import earth.terrarium.botarium.common.energy.impl.WrappedBlockEnergyContainer
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.IntTag
@@ -14,16 +17,19 @@ import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 
+
 class ExtractorBlockEntity(pos: BlockPos, state: BlockState) :
   BlockEntity(BlockEntities.EXTRACTOR_BLOCK_ENTITY.get(), pos, state),
-  ExtractorContainer {
+  ExtractorContainer, EnergyAttachment.Block {
+
+  private var energyContainer: WrappedBlockEnergyContainer? = null
+
   override val items = SingleSlotItemList()
 
   var resource = ItemStack.EMPTY
   var amountPerSecond = 0
 
   override fun saveAdditional(tag: CompoundTag) {
-
     ContainerHelper.saveAllItems(tag, items)
 
     tag.put("Resource", resource.save(CompoundTag()))
@@ -60,8 +66,19 @@ class ExtractorBlockEntity(pos: BlockPos, state: BlockState) :
   }
 
   fun tick(level: Level, pos: BlockPos, state: BlockState) {
-    if (level.gameTime % 60L == 0L) {
+    energyContainer?.extractEnergy(50L, false)
+
+    if ((energyContainer?.storedEnergy ?: 0L) < 50L) {
+      return
+    }
+
+    if (level.gameTime % 10L == 0L) {
       generateResource()
     }
+  }
+
+  override fun getEnergyStorage(holder: BlockEntity?): WrappedBlockEnergyContainer? {
+    return energyContainer ?: WrappedBlockEnergyContainer(this, SimpleEnergyContainer(1000000))
+      .also { energyContainer = it }
   }
 }

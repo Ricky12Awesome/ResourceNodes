@@ -9,7 +9,10 @@ architectury {
 
 val archives_base_name: String by rootProject
 val architectury_version: String by rootProject
+val botarium_version: String by rootProject
 val forge_version: String by rootProject
+val kotlin_for_forge_version: String by rootProject
+val minecraft_version: String by rootProject
 
 loom {
   accessWidenerPath.set(project(":common").loom.accessWidenerPath)
@@ -41,6 +44,13 @@ configurations {
   developmentForge.extendsFrom(common)
 }
 
+repositories {
+  maven {
+    name = "Kotlin for Forge"
+    url = uri("https://thedarkcolour.github.io/KotlinForForge/")
+  }
+}
+
 dependencies {
   forge("net.minecraftforge:forge:$forge_version")
   // Remove the next line if you don't want to depend on the API
@@ -54,14 +64,11 @@ dependencies {
     isTransitive = false
   }
 
-  common(kotlin("stdlib-jdk8"))
-}
+  // Kotlin
+  implementation("thedarkcolour:kotlinforforge:$kotlin_for_forge_version")
 
-repositories {
-  maven {
-    name = "Kotlin for Forge"
-    url = uri("https://thedarkcolour.github.io/KotlinForForge/")
-  }
+  // Mods
+  modApi("earth.terrarium:botarium-forge-$minecraft_version:$botarium_version")
 }
 
 val javaComponent = components.getByName<AdhocComponentWithVariants>("java")

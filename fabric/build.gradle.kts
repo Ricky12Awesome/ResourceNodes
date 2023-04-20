@@ -13,9 +13,11 @@ loom {
 
 val archives_base_name: String by rootProject
 val architectury_version: String by rootProject
+val botarium_version: String by rootProject
 val fabric_api_version: String by rootProject
 val fabric_language_kotlin_version: String by rootProject
 val fabric_loader_version: String by rootProject
+val minecraft_version: String by rootProject
 
 /**
  * @see: https://docs.gradle.org/current/userguide/migrating_from_groovy_to_kotlin_dsl.html
@@ -45,7 +47,11 @@ dependencies {
     isTransitive = false
   }
 
+  // Kotlin
   modImplementation("net.fabricmc:fabric-language-kotlin:$fabric_language_kotlin_version")
+
+  // Mods
+  modApi("earth.terrarium:botarium-fabric-$minecraft_version:$botarium_version")
 }
 
 val javaComponent = components.getByName<AdhocComponentWithVariants>("java")

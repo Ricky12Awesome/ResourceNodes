@@ -52,6 +52,25 @@ allprojects {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+
+    maven {
+      name = "Botarium"
+      url = uri("https://nexus.resourcefulbees.com/repository/maven-public/")
+    }
+
+    maven {
+      name = "Curse Maven"
+      url = uri("https://cursemaven.com")
+
+      content {
+        includeGroup("curse.maven")
+      }
+    }
+
+    maven {
+      name = "MSRandom"
+      url = uri("https://maven.msrandom.net/repository/root/")
+    }
   }
 
   dependencies {
@@ -71,5 +90,4 @@ allprojects {
     kotlinOptions.jvmTarget = "17"
     kotlinOptions.freeCompilerArgs += "-Xjvm-default=all"
   }
-
 }
