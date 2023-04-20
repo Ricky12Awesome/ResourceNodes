@@ -66,11 +66,11 @@ class ExtractorBlockEntity(pos: BlockPos, state: BlockState) :
   }
 
   fun tick(level: Level, pos: BlockPos, state: BlockState) {
-    energyContainer?.extractEnergy(50L, false)
-
     if ((energyContainer?.storedEnergy ?: 0L) < 50L) {
       return
     }
+
+    energyContainer?.extractEnergy(50L, false)
 
     if (level.gameTime % 10L == 0L) {
       generateResource()
