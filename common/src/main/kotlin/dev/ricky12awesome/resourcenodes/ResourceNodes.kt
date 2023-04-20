@@ -1,6 +1,7 @@
 package dev.ricky12awesome.resourcenodes
 
 import com.mojang.logging.LogUtils.getLogger
+import dev.ricky12awesome.resourcenodes.block.Blocks
 import dev.ricky12awesome.resourcenodes.item.Items
 import org.slf4j.Logger
 
