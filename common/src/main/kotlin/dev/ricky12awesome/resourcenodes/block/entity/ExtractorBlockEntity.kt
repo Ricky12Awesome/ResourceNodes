@@ -77,7 +77,7 @@ class ExtractorBlockEntity(pos: BlockPos, state: BlockState) :
     }
   }
 
-  override fun getEnergyStorage(holder: BlockEntity?): WrappedBlockEnergyContainer? {
+  override fun getEnergyStorage(holder: BlockEntity?): WrappedBlockEnergyContainer {
     return energyContainer ?: WrappedBlockEnergyContainer(this, SimpleEnergyContainer(1000000))
       .also { energyContainer = it }
   }

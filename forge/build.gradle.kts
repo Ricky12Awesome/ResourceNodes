@@ -11,6 +11,7 @@ val archives_base_name: String by rootProject
 val architectury_version: String by rootProject
 val botarium_version: String by rootProject
 val forge_version: String by rootProject
+val json5k_version: String by rootProject
 val kotlin_for_forge_version: String by rootProject
 val minecraft_version: String by rootProject
 
@@ -66,6 +67,14 @@ dependencies {
 
   // Kotlin
   implementation("thedarkcolour:kotlinforforge:$kotlin_for_forge_version")
+
+  common("io.github.xn32:json5k-jvm:$json5k_version") {
+    isTransitive = false
+  }
+
+  shadowCommon("io.github.xn32:json5k-jvm:$json5k_version") {
+    isTransitive = false
+  }
 
   // Mods
   modApi("earth.terrarium:botarium-forge-$minecraft_version:$botarium_version")

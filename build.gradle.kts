@@ -2,10 +2,13 @@ import dev.architectury.plugin.ArchitecturyPlugin
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlinx.serialization.gradle.SerializationGradleSubplugin
 
 plugins {
   java
   kotlin("jvm") version "1.8.20" apply false
+  kotlin("plugin.serialization") version "1.8.20" apply false
+
   id("architectury-plugin") version "3.4-SNAPSHOT"
   id("dev.architectury.loom") version "1.1-SNAPSHOT" apply false
 }
@@ -41,6 +44,7 @@ allprojects {
   apply<ArchitecturyPlugin>()
   apply<MavenPublishPlugin>()
   apply<KotlinPluginWrapper>()
+  apply<SerializationGradleSubplugin>()
 
   base.archivesName.set(archives_base_name)
   version = mod_version

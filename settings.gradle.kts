@@ -23,5 +23,5 @@ rootProject.name = "ResourceNodes"
 
 include("common")
 include("fabric")
-include("quilt")
+//include("quilt")
 include("forge")

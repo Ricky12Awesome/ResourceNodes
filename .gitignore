@@ -11,5 +11,5 @@ gradle-app.setting
 # Minecraft
 **/run
 forge/src/generated/
-
+.architectury-transformer
 

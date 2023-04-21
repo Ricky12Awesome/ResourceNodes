@@ -7,6 +7,8 @@ val architectury_version: String by rootProject
 val botarium_version: String by rootProject
 val enabled_platforms: String by rootProject
 val fabric_loader_version: String by rootProject
+val json5k_version: String by rootProject
+val kotlinx_serialization_version: String by rootProject
 val minecraft_version: String by rootProject
 
 architectury {
@@ -27,6 +29,8 @@ dependencies {
 
   // Kotlin
   implementation(kotlin("stdlib-jdk8"))
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:$kotlinx_serialization_version")
+  implementation("io.github.xn32:json5k-jvm:$json5k_version")
 
   // Mods
   modImplementation("earth.terrarium:botarium-common-$minecraft_version:$botarium_version")

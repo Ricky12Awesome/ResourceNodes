@@ -17,6 +17,7 @@ val botarium_version: String by rootProject
 val fabric_api_version: String by rootProject
 val fabric_language_kotlin_version: String by rootProject
 val fabric_loader_version: String by rootProject
+val json5k_version: String by rootProject
 val minecraft_version: String by rootProject
 
 /**
@@ -49,6 +50,14 @@ dependencies {
 
   // Kotlin
   modImplementation("net.fabricmc:fabric-language-kotlin:$fabric_language_kotlin_version")
+
+  common("io.github.xn32:json5k-jvm:$json5k_version") {
+    isTransitive = false
+  }
+
+  shadowCommon("io.github.xn32:json5k-jvm:$json5k_version") {
+    isTransitive = false
+  }
 
   // Mods
   modApi("earth.terrarium:botarium-fabric-$minecraft_version:$botarium_version")
