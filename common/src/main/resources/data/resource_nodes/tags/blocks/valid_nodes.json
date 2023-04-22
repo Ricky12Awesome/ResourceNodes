@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "resource_nodes:node_coal",
+    "resource_nodes:node_copper",
+    "resource_nodes:node_iron",
+    "resource_nodes:node_gold",
+    "resource_nodes:node_diamond",
+    "resource_nodes:node_emerald"
+  ]
+}

@@ -16,51 +16,49 @@ data class ResourceNodesConfig(
     """
     {
       // What node is this config for?
-      node: "resource_nodes:node_dirt"
+      // this can be any block
+      "node": "resource_nodes:node_dirt"
       
       // How much rf capacity should this have?
-      rfCapacity: 10000,
+      "rfCapacity": 10000,
       
       // How much rf per tick should this take?
-      rfPerTick: 50,
+      "rfPerTick": 50,
       
       // How often should this generate a resource? 
       // in ticks, there's 20 ticks in a second
       // so 100 ticks would be 5 seconds
-      ticksPerResource: 100,
+      "ticksPerResource": 100,
       
       // What resource should this generate?
-      resource: {
+      "resource": {
         // ID of the item to generate
-        id: "minecraft:dirt",
+        "id": "minecraft:dirt",
         
         // Optional NBT data
-        nbt: "{}"
+        "nbt": "{}"
       }
     }
   """
   )
   val extractorBlockConfigs: List<ExtractorBlockConfig>
 ) {
+  val extractorBlockConfigsAsMap = extractorBlockConfigs.associateBy(ExtractorBlockConfig::node)
+
+  fun getExtractorBlockConfig(name: String): ExtractorBlockConfig? {
+    return extractorBlockConfigsAsMap[name]
+  }
+
   companion object {
     private val json5 = Json5 {
       prettyPrint = true
-      quoteMemberNames = false
+      quoteMemberNames = true
       indentationWidth = 2
       useSingleQuotes = false
-      encodeDefaults = true
+      encodeDefaults = false
     }
 
-    fun initialize(path: Path): ResourceNodesConfig {
-      return if (path.exists()) {
-        json5.decodeFromStream(path.inputStream())
-      } else {
-        json5.encodeToStream(default, path.outputStream())
-        default
-      }
-    }
-
-    private val default = ResourceNodesConfig(
+    val default = ResourceNodesConfig(
       extractorBlockConfigs = listOf(
         ExtractorBlockConfig(
           node = "resource_nodes:node_coal",
@@ -106,6 +104,15 @@ data class ResourceNodesConfig(
         ),
       )
     )
+
+    fun initialize(path: Path): ResourceNodesConfig {
+      return if (path.exists()) {
+        json5.decodeFromStream(path.inputStream())
+      } else {
+        json5.encodeToStream(default, path.outputStream())
+        default
+      }
+    }
   }
 }
 
@@ -117,9 +124,9 @@ data class ExtractorBlockResourceConfig(
 
 @Serializable
 data class ExtractorBlockConfig(
-  val node: String = "resource_nodes:node_dirt",
-  val rfCapacity: Long = 10000,
-  val rfPerTick: Long = 50,
-  val ticksPerResource: Long = 100,
+  val node: String,
+  val rfCapacity: Long,
+  val rfPerTick: Long,
+  val ticksPerResource: Long,
   val resource: ExtractorBlockResourceConfig = ExtractorBlockResourceConfig("minecraft:dirt"),
 )

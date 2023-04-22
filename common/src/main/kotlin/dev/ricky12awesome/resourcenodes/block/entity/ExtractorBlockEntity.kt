@@ -7,10 +7,12 @@ import earth.terrarium.botarium.common.energy.impl.SimpleEnergyContainer
 import earth.terrarium.botarium.common.energy.impl.WrappedBlockEnergyContainer
 import net.minecraft.core.BlockPos
 import net.minecraft.nbt.CompoundTag
-import net.minecraft.nbt.IntTag
+import net.minecraft.nbt.LongTag
+import net.minecraft.nbt.StringTag
 import net.minecraft.network.protocol.Packet
 import net.minecraft.network.protocol.game.ClientGamePacketListener
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.ContainerHelper
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
@@ -26,23 +28,37 @@ class ExtractorBlockEntity(pos: BlockPos, state: BlockState) :
 
   override val items = SingleSlotItemList()
 
+  var node: ResourceLocation? = null
   var resource = ItemStack.EMPTY
-  var amountPerSecond = 0
+  var capacity = 10000L
+  var rfPerTick = 50L
+  var ticksPerResource = 5L
 
   override fun saveAdditional(tag: CompoundTag) {
     ContainerHelper.saveAllItems(tag, items)
 
+    if (node != null) {
+      tag.put("Node", StringTag.valueOf(node.toString()))
+    }
+
     tag.put("Resource", resource.save(CompoundTag()))
-    tag.put("AmountPerSecond", IntTag.valueOf(amountPerSecond))
+    tag.put("Capacity", LongTag.valueOf(capacity))
+    tag.put("RFPerTick", LongTag.valueOf(rfPerTick))
+    tag.put("TicksPerResource", LongTag.valueOf(ticksPerResource))
 
     super.saveAdditional(tag)
   }
 
   override fun load(compoundTag: CompoundTag) {
     super.load(compoundTag)
+
     ContainerHelper.loadAllItems(compoundTag, items)
+
+    node = ResourceLocation.tryParse(compoundTag.getString("Node")) ?: node
     resource = ItemStack.of(compoundTag.getCompound("Resource"))
-    amountPerSecond = compoundTag.getInt("AmountPerSecond")
+    capacity = compoundTag.getLong("Capacity")
+    rfPerTick = compoundTag.getLong("RFPerTick")
+    ticksPerResource = compoundTag.getLong("TicksPerResource")
   }
 
   override fun getUpdatePacket(): Packet<ClientGamePacketListener>? {
@@ -66,19 +82,19 @@ class ExtractorBlockEntity(pos: BlockPos, state: BlockState) :
   }
 
   fun tick(level: Level, pos: BlockPos, state: BlockState) {
-    if ((energyContainer?.storedEnergy ?: 0L) < 50L) {
+    if ((energyContainer?.storedEnergy ?: 0L) < rfPerTick) {
       return
     }
 
-    energyContainer?.extractEnergy(50L, false)
+    energyContainer?.extractEnergy(rfPerTick, false)
 
-    if (level.gameTime % 10L == 0L) {
+    if (level.gameTime % ticksPerResource.coerceAtLeast(1L) == 0L) {
       generateResource()
     }
   }
 
   override fun getEnergyStorage(holder: BlockEntity?): WrappedBlockEnergyContainer {
-    return energyContainer ?: WrappedBlockEnergyContainer(this, SimpleEnergyContainer(1000000))
+    return energyContainer ?: WrappedBlockEnergyContainer(this, SimpleEnergyContainer(capacity))
       .also { energyContainer = it }
   }
 }

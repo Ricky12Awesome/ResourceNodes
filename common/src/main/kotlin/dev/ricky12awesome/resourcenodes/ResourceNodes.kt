@@ -12,18 +12,25 @@ const val MOD_ID = "resource_nodes"
 object ResourceNodes {
   val logger: Logger = getLogger()
 
-  fun init() {
-    Items.register()
-    Blocks.register()
+  lateinit var config: ResourceNodesConfig
+    private set
 
-    val config = ResourceNodesConfig.initialize(
+  fun reloadConfig() {
+    config = ResourceNodesConfig.initialize(
       ResourceNodesPlatform
         .getConfigDirectory()
         .absolute()
         .resolve("$MOD_ID.json5")
     )
+  }
 
-    logger.info("$config")
+  fun init() {
+    reloadConfig()
+
+    Items.register()
+    Blocks.register()
+
+
 //    logger.info(ResourceNodesPlatform.getConfigDirectory().toAbsolutePath().normalize().toString())
   }
 }
