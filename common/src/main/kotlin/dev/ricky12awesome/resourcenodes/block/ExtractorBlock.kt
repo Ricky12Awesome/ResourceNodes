@@ -131,7 +131,7 @@ class ExtractorBlock : Block(Properties.of(Material.METAL)), EntityBlock {
       .adjacent()
       .map(levelAccessor::getBlockState)
       .map { it.block.registryName() }
-      .any { name == node }
+      .any { it == node }
 
     if (!result) {
       return MCBlocks.AIR.defaultBlockState()

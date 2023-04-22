@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "resource_nodes:block/node_emerald" }
+  }
+}

@@ -1,3 +1,10 @@
 {
-  "item.examplemod.example_item": "Example Item"
+  "block.resource_nodes.extractor": "Extractor",
+  "itemGroup.resource_nodes.tab": "Resource Nodes",
+  "block.resource_nodes.node_coal": "Coal Node",
+  "block.resource_nodes.node_copper": "Copper Node",
+  "block.resource_nodes.node_iron": "Iron Node",
+  "block.resource_nodes.node_gold": "Gold Node",
+  "block.resource_nodes.node_diamond": "Diamond Node",
+  "block.resource_nodes.node_emerald": "Emerald Node"
 }

@@ -21,8 +21,8 @@ object Blocks {
   val BLOCKS: DeferredRegister<Block> = DeferredRegister.create(MOD_ID, Registries.BLOCK)
   val BLOCK_ITEMS: DeferredRegister<Item> = DeferredRegister.create(MOD_ID, Registries.ITEM)
 
-  val EXTRACTOR_BLOCK: RegistrySupplier<Block> = BLOCKS.register("extractor_block", ::ExtractorBlock)
-  val EXTRACTOR_BLOCK_ITEM: RegistrySupplier<Item> = BLOCK_ITEMS.register("extractor_block", ::ExtractorBlockItem)
+  val EXTRACTOR_BLOCK: RegistrySupplier<Block> = BLOCKS.register("extractor", ::ExtractorBlock)
+  val EXTRACTOR_BLOCK_ITEM: RegistrySupplier<Item> = BLOCK_ITEMS.register("extractor", ::ExtractorBlockItem)
 
   val NODE_COAL_BLOCK: RegistrySupplier<Block> = nodeBlock("coal")
   val NODE_COAL_BLOCK_ITEM: RegistrySupplier<Item> = nodeBlockItem(NODE_COAL_BLOCK, "coal")
@@ -41,24 +41,6 @@ object Blocks {
 
   val NODE_EMERALD_BLOCK: RegistrySupplier<Block> = nodeBlock("emerald")
   val NODE_EMERALD_BLOCK_ITEM: RegistrySupplier<Item> = nodeBlockItem(NODE_EMERALD_BLOCK, "emerald")
-
-  val NODE_BLOCKS = listOf(
-    NODE_COAL_BLOCK,
-    NODE_COPPER_BLOCK,
-    NODE_IRON_BLOCK,
-    NODE_GOLD_BLOCK,
-    NODE_DIAMOND_BLOCK,
-    NODE_EMERALD_BLOCK,
-  )
-
-  val NODE_BLOCK_ITEMS = listOf(
-    NODE_COAL_BLOCK_ITEM,
-    NODE_COPPER_BLOCK_ITEM,
-    NODE_IRON_BLOCK_ITEM,
-    NODE_GOLD_BLOCK_ITEM,
-    NODE_DIAMOND_BLOCK_ITEM,
-    NODE_EMERALD_BLOCK_ITEM,
-  )
 
   fun nodeBlock(name: String): RegistrySupplier<Block> {
     return BLOCKS.register("node_$name") {
